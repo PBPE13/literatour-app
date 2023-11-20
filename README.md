@@ -1,16 +1,92 @@
-# literatour_app
+## Anggota Kelompok
 
-A new Flutter project.
+1. James Zefanya Tumbelaka - 2206824653
+2. Kenisha Jazlyn Malano - 2206030262
+3. Raisa Diandra Survijanto - 2206814545
+4. Rafi Ghani Harditama - 2206081364
 
-## Getting Started
+## Deskripsi Aplikasi
 
-This project is a starting point for a Flutter application.
+LITERATOUR adalah suatu aplikasi yang digunakan sebagai perpustakaan daring. Dengan melakukan pendaftaran, pengguna dapat menggunakan berbagai fitur yang ditawarkan oleh LITERATOUR.
+Pengguna yang telah mendaftar menjadi anggota dapat mencari beragam buku dari berbagai kategori yang tersedia dan melakukan peminjaman buku. Selain itu, pengguna dapat melakukan lebih banyak hal dengan fitur yang tersedia, seperti mencari dan mengunggah ulasan buku, berdiskusi dengan pengguna lain mengenai buku tertentu, serta membuat catatan pribadi tentang buku-buku yang telah dibaca.
+LITERATOUR memungkinkan pengguna untuk mengeksplorasi dan menikmati dunia buku dalam lingkungan daring ini.
 
-A few resources to get you started if this is your first Flutter project:
+## Modul
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+1. Register dan Loguin Page
+* Buat account
+* Login user
+* Login as guest
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+2. Landing Page
+* Navbar Menu
+- Pinjam dan mengembalikan buku
+- Reading list / diary
+- Review / ulas buku
+- Forum
+- Search buku
+- Log out
+* Display katalog buku dengan Card
+
+3. Search Page
+* Field untuk memasukkan keyword
+* Radio button untuk menselect genre (predetermined)
+
+4. Search Result Page
+* Navbar Menu
+* Display buku hasil search dengan Card
+- Pada masing - masing card terdapat button pinjam
+- Sort berdasarkan review terbanyak atau favorite terbanyak
+- Menampilkan buku sudah terpinjam / tidak
+
+5. Borrow and Return
+* Menampilkan tanggal buku dipinjam
+* Menampilkan data buku yang akan dipinjam
+* Meminta input tanggal buku akan dikembalikan
+* Button Borrow dan Return muncul berdasarkan status buku
+* Button cancel action
+
+6. Reading List Page (Diary)
+* Menampilkan buku yang telah dibaca (Card)
+* Menulis tanggal selesai membaca
+* Menulis notes mengenai buku
+
+7. Forum Page
+* Diskusi buku oleh member
+
+8. Review Page
+* Dapat diakses dari card buku yang sudah dikembalikan
+* Menampilkan data buku yang akan direview
+* Field komentar untuk buku
+* Button submit review
+* Review dapat dilihat di card buku pada katalog
+
+9. Profile Page
+* Role user
+* Nama user
+* Bio data user
+* Preferred genre user
+* Log out
+
+## Role
+
+1. Admin
+* Melakukan pengecekkan data peminjaman buku tiap member
+* Memonitor aktivitas tiap user (access logs)
+
+2. Member
+* Mengakses katalog buku
+* Mengakses halaman search buku
+* Meminjam dan mengembalikan buku
+* Menulis review
+* Menulis pesan forum
+* Menulis diary
+
+3. Guest
+* Mengakses katalog buku
+* Mengakses halaman search buku
+
+## Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester
+
+## Link Berita Acara
+https://docs.google.com/spreadsheets/d/1xa2CowPCeD1xp96L4OnjCE8X95BwOGCqGDC2TpH7stA/edit?usp=sharing
