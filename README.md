@@ -105,8 +105,11 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_SAMESITE = 'None'
 ```
-10. Membuat fungsi di `views.py` dan path url di `urls.py` aplikasi `authentication` untuk fitur `login`, `logout`, dan `register`.
-11. Menggunakan package `pbp_django_auth`, `http`, dan `provider` untuk mengakses data JSON dari web server, melakukan HTTP GET dan POST untuk mengambil, menambahkan, memodifikasi, atau menghapus data pada database webserver.
+10. Membuat fungsi di `views.py` dan *path url* di `urls.py` aplikasi `authentication` untuk fitur `login`, `logout`, dan `register`.
+11. Menggunakan *package* `pbp_django_auth`, `http`, dan `provider` untuk mengakses data JSON dari web server, melakukan HTTP GET dan POST untuk mengambil, menambahkan, memodifikasi, atau menghapus data pada database webserver.
+12. Mengakses *url* fungsi yang digunakan pada tiap aplikasi Django pada project Flutter dan menghubungkannya dengan button yang akan dibuat dalam halaman aplikasi.
+13. Menampilkan objek pada tiap aplikasi menggunakan widget `Card` dalam aplikasi Flutter.
+14. Mengintegrasikan form pada Django dengan Flutter melalui pembuatan halaman flutter dengan `fields` yang berkorespondensi dengan `fields` pada form tiap aplikasi Django.
 
 ## Link Berita Acara
 https://docs.google.com/spreadsheets/d/1xa2CowPCeD1xp96L4OnjCE8X95BwOGCqGDC2TpH7stA/edit?usp=sharing
