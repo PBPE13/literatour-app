@@ -13,7 +13,7 @@ LITERATOUR memungkinkan pengguna untuk mengeksplorasi dan menikmati dunia buku d
 
 ## Modul
 
-1. Register dan Loguin Page
+1. Register dan Login Page
 * Buat account
 * Login user
 * Login as guest
@@ -87,6 +87,26 @@ LITERATOUR memungkinkan pengguna untuk mengeksplorasi dan menikmati dunia buku d
 * Mengakses halaman search buku
 
 ## Alur pengintegrasian dengan web service untuk terhubung dengan aplikasi web yang sudah dibuat saat Proyek Tengah Semester
+
+1. Mengubah struktur project Flutter sehingga terpisah - pisah setiap modulnya.
+2. Mengkonversi models dari tiap modul dalam project Django dengan menggunakan QuickType.
+3. Membuat file `.dart` untuk menampung hasil konversi dari QuickType untuk digunakan dalam project Flutter.
+4. Menambahkan aplikasi baru `authentication` dalam project Django.
+5. Menambahkan `authentication` ke dalam `INSTALLED_APPS` pada `settings.py`.
+6. Menambahkan `django-cors-headers` dalam `INSTALLED_APPS` pada `requirements.txt`.
+7. Menambahkan `corsheaders` ke dalam `INSTALLED_APPS` pada `settings.py` di main project Django.
+8. Menambahkan `corsheaders.middleware.CorsMiddleware` pada `MIDDLEWARE` di `settings.py` di main project Django.
+9. Menambahkan variabel - variabel berikut pada `settings.py`.
+```python
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
+```
+10. Membuat fungsi di `views.py` dan path url di `urls.py` aplikasi `authentication` untuk fitur `login`, `logout`, dan `register`.
+11. Menggunakan package `pbp_django_auth`, `http`, dan `provider` untuk mengakses data JSON dari web server, melakukan HTTP GET dan POST untuk mengambil, menambahkan, memodifikasi, atau menghapus data pada database webserver.
 
 ## Link Berita Acara
 https://docs.google.com/spreadsheets/d/1xa2CowPCeD1xp96L4OnjCE8X95BwOGCqGDC2TpH7stA/edit?usp=sharing
