@@ -39,10 +39,13 @@ class _LoginPageState extends State<LoginPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
-        backgroundColor:  Color(0xFF333333),
-        foregroundColor: Colors.white,
-      ),
+          title: const Text('Login', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,     
+          ),
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -69,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                 String password = _passwordController.text;
 
                 final response =
-                    await request.login("http://localhost:8000/auth/login/", {
+                    await request.login("https://literatour-e13-tk.pbp.cs.ui.ac.id/auth/login/", {
                   'username': username,
                   'password': password,
                 });
@@ -81,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const DetailBookPage()),
+                          builder: (context) => DetailBookPage()),
                     );
                     ScaffoldMessenger.of(context)
                       ..hideCurrentSnackBar()

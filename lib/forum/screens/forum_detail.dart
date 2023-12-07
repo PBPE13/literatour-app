@@ -16,11 +16,10 @@ class ForumDetailPage extends StatefulWidget {
 }
 
 class _ForumPostDetailState extends State<ForumDetailPage> {
-
   @override
   Widget build(BuildContext context) {
     Future<List<Comment>> fetchComment(id) async {
-        var url = Uri.parse('http://localhost:8000/forum/flutterComment/${id}/');
+        var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutterComment/${widget.myForum.pk}/');
         var response = await http.get(
           url,
           headers: {
@@ -37,166 +36,175 @@ class _ForumPostDetailState extends State<ForumDetailPage> {
         }
         return listComment;
       }
-    
     final request = context.watch<CookieRequest>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail'),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          height: 800,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.myForum.topic,
-                    style: const TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        fontSize: 14.0,
-                        color: Colors.black,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: '${widget.myForum.description}\n'),
-                        TextSpan(
-                            text: '${widget.myForum.user}\n'),
-                        TextSpan(
-                            text: '${widget.myForum.date}\n'),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.indigo),
-                    ),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ForumPage()),
-                      );
-                    },
-                    child: const SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: Center(
-                          child: Text(
-                            "Back",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ))),
-                if (request.loggedIn)
-                  TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.indigo),
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CommentForm(myForum:widget.myForum)),
-                        );
-                      },
-                      child: const SizedBox(
-                          height: 40,
-                          width: 200,
-                          child: Center(
-                            child: Text(
-                              "Add New Comment",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )
-                      )
-                  ),
-                FutureBuilder<List<Comment>>(
-                  future: fetchComment(widget),
-                  builder: (context, AsyncSnapshot<List<Comment>> snapshot) {
-                    if (snapshot.data == null) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      if (!snapshot.hasData) {
-                        return Column(
-                          children: [
-                            const Text(
-                              "Oh no! Tidak ada forum :(",
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        );
-                      } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (_, index) => Container(
-                              padding: const EdgeInsets.all(20.0),
-                              height:150,
-                              decoration: BoxDecoration(
-                                color: Colors.indigo,
-                                borderRadius: BorderRadius.circular(17.0),
-                              ),
-                              child: Padding(
-                                  padding:const EdgeInsets.all(8.0),
-                                  child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Flexible(
-                                          child: Text(
-                                              snapshot.data![index].description,
-                                              overflow: TextOverflow.fade,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              )
-                                          ),
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                              "written by " + snapshot.data![index].user,
-                                              overflow: TextOverflow.fade,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              )
-                                          ),
-                                        ),
-                                        Flexible(
-                                          child: Text(
-                                              snapshot.data![index].date.toString(),
-                                              overflow: TextOverflow.fade,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                              )
-                                          ),
-                                        ),
-                                      ])
-                              )
-                          ),
-                        );
-                      }
-                    }
-                  },
-                )
-              ]),
-
-            ],
+     appBar: AppBar(
+          title: const Text('Detail Forum', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,     
           ),
-        )
-      ),
-        bottomNavigationBar: BottomMenu(2),
+      body: Stack( 
+        children: [
+          SingleChildScrollView(
+                child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom:20), 
+                      child:  Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.myForum.topic,
+                            overflow: TextOverflow.fade,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Mulish',
+                            )
+                          ),
+                          Text(
+                            widget.myForum.title,
+                            overflow: TextOverflow.fade,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Mulish',
+                            )
+                          ),
+                          Text(
+                            widget.myForum.description,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                overflow: TextOverflow.visible,
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'Mulish',
+                              )
+                            ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15.0),
+                            child: 
+                              Text(
+                                    "by: " + widget.myForum.user,
+                                    overflow: TextOverflow.fade,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Mulish',
+                                    )
+                                ),
+                              ),
+                          Text(
+                              widget.myForum.date.toString(),
+                              overflow: TextOverflow.fade,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: 'Mulish',
+                              )
+                          )
+                        ]
+                      ),),
+                   
+                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      FutureBuilder<List<Comment>>(
+                        future: fetchComment(widget),
+                        builder: (context, AsyncSnapshot<List<Comment>> snapshot) {
+                          if (snapshot.data == null) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else {
+                            if (!snapshot.hasData) {
+                              return Column(
+                                children: [
+                                  const Text(
+                                    "Oh no! Tidak ada forum :(",
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              );
+                            } else {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (_, index) => 
+                                  Padding(
+                                    padding: const EdgeInsets.only(top:8.0, left: 20.0, right: 15.0, bottom: 20.0),
+                                    child: Container(
+                                        padding: const EdgeInsets.all(20),
+                                        decoration: 
+                                          BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(color: Colors.grey, width: 0.3),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          
+                                        ),
+                                        child: 
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot.data![index].description,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    overflow: TextOverflow.visible,
+                                                    fontStyle: FontStyle.italic,
+                                                    fontFamily: 'Mulish',
+                                                  )
+                                                ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 15.0),
+                                                child: 
+                                                  Text(
+                                                        "by: " + snapshot.data![index].user,
+                                                        overflow: TextOverflow.clip,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'Mulish',
+                                                        )
+                                                    ),
+                                              ),
+                                              Text(
+                                                  snapshot.data![index].date.toString(),
+                                                  overflow: TextOverflow.clip,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontFamily: 'Mulish',
+                                                  )
+                                              ),
+                                            ])
+                                            )
+                                    ),
+                              );
+                            }
+                          }
+                        },
+                      )
+                    ]),
+                    
+                  ],
+                ),
+              )
+            ),
+          Positioned(
+                bottom: MediaQuery.of(context).size.height / 48,
+                right: 20,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CommentForm(myForum: widget.myForum),
+                    ));
+                  },
+                  child: Icon(Icons.chat_bubble, color: Colors.white),
+                  backgroundColor: const Color.fromARGB(255, 3, 127, 230),
+                  shape: CircleBorder(),
+                ),
+              ),
+        ]
+      ), 
+      bottomNavigationBar: BottomMenu(1),
     );
   }
 }

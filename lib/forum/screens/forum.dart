@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:literatour_app/auth/login.dart';
 import 'package:literatour_app/forum/models/forum.dart';
 import 'package:literatour_app/forum/screens/forum_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -16,7 +17,7 @@ class ForumPage extends StatefulWidget {
 
 class _ForumPageState extends State<ForumPage> {
   Future<List<ForumPost>>  fetchForum()  async {
-  var url = Uri.parse('http://localhost:8000/forum/flutterForum/');
+  var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutterForum/');
   var response = await http.get(
     url,
     headers: {
@@ -39,51 +40,34 @@ class _ForumPageState extends State<ForumPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text ("ForumPost"),
-      ),
-        body: SingleChildScrollView(
+          title: const Text('Forum', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,     
+          ),
+        body: Stack(children: [
+        SingleChildScrollView(
           child: Column (
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if (request.loggedIn)
-                  TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.indigo),
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ForumForm()),
-                        );
-                      },
-                      child: const SizedBox(
-                          height: 40,
-                          width: 200,
-                          child: Center(
-                            child: Text(
-                              "Add New ForumPost",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          )
-                      )
-                  ),
                 FutureBuilder(
-                  future: fetchForum(),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.data == null) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      if (!snapshot.hasData) {
-                        return Column(
-                          children: [
-                            Text(
-                              "Oh no! Tidak ada forum :(",
-                            ),
-                            const SizedBox(height: 8),
-                          ],
-                        );
+                    future: fetchForum(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        if (!snapshot.hasData) {
+                          return Column(
+                            children: [
+                              Text(
+                                "Oh no! Tidak ada forum :(",
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                          );
                       } else {
                         return ListView.builder(
                             shrinkWrap: true,
@@ -91,84 +75,92 @@ class _ForumPageState extends State<ForumPage> {
                             itemBuilder: (_, index) => InkWell(
                               // make anything clickable
                               onTap: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ForumDetailPage(
-                                          myForum:snapshot.data![index])),
-                                );
+                                Navigator.pushReplacement(context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ForumDetailPage(
+                                          myForum:snapshot.data![index])),);
                               },
                               child: Padding(
-                                  padding:const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.only(top:8.0, left: 15.0, right: 15.0, bottom: 18.0),
                                   child: Container(
                                       padding: const EdgeInsets.all(20),
-                                      height: 150,
                                       decoration: BoxDecoration(
-                                        color: Colors.indigo,
-                                        borderRadius: BorderRadius.circular(17.0),
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(18.0),
                                       ),
                                       child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Flexible(
-                                              child: Text(
-                                                  snapshot.data![index].topic,
-                                                  overflow: TextOverflow.fade,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold
-                                                  )
-                                              ),
+                                            Text(
+                                              snapshot.data![index].topic,
+                                              overflow: TextOverflow.fade,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Mulish',
+                                              )
                                             ),
-                                            Flexible(
-                                              child: Text(
-                                                  snapshot.data![index].description,
-                                                  overflow: TextOverflow.fade,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  )
-                                              ),
+                                            Text(
+                                              snapshot.data![index].title,
+                                              overflow: TextOverflow.fade,
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontFamily: 'Mulish',
+                                              )
                                             ),
-                                            Flexible(
-                                              child: Text(
-                                                  "written by " + snapshot.data![index].user,
-                                                  overflow: TextOverflow.fade,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  )
+                                            Text(
+                                              snapshot.data![index].description,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  overflow: TextOverflow.visible,
+                                                  fontStyle: FontStyle.italic,
+                                                  fontFamily: 'Mulish',
+                                                )
                                               ),
-                                            ),
-                                            Flexible(
-                                              child: Text(
-                                                  snapshot.data![index].title,
-                                                  overflow: TextOverflow.fade,
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  )
+                                           Padding(
+                                            padding: const EdgeInsets.only(top: 15.0),
+                                            child: 
+                                              Text(
+                                                    "by: " + snapshot.data![index].user,
+                                                    overflow: TextOverflow.fade,
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontFamily: 'Mulish',
+                                                    )
+                                                ),
                                               ),
-                                            ),
-                                            Flexible(
-                                              child: Text(
+                                              Text(
                                                   snapshot.data![index].date.toString(),
                                                   overflow: TextOverflow.fade,
                                                   style: const TextStyle(
-                                                    color: Colors.white,
+                                                    color: Colors.black,
+                                                    fontFamily: 'Mulish',
                                                   )
                                               ),
-                                            ),
-                                          ]))
-                              )
-                              ,
-                            ));
-                      }
-                    }
-                  },
-                )
-              ]
-          )
-        )
-
-     ,bottomNavigationBar: BottomMenu(2),
+                                          ])
+                                          )
+                              ),
+                            ));}
+                    }},)]
+          ))
+        , Positioned(
+            bottom: MediaQuery.of(context).size.height / 48,
+            right: 20,
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ForumForm(),
+                ));
+              },
+              child: Icon(Icons.add, color: Colors.white),
+              backgroundColor: const Color.fromARGB(255, 3, 127, 230),
+              shape: CircleBorder(),
+            ),
+          ),
+        ])
+        ,bottomNavigationBar: BottomMenu(1),
     );
   }
+  
 }

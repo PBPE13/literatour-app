@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:literatour_app/forum/screens/forum.dart';
 import 'package:literatour_app/main.dart';
 import 'package:flutter/material.dart';
 import 'package:literatour_app/forum/models/forum.dart';
+import 'package:literatour_app/models/book.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:literatour_app/main.dart';
+import 'package:http/http.dart' as http;
 import 'package:literatour_app/widgets/bottom_menu.dart';
 class ForumForm extends StatefulWidget {
   const ForumForm({super.key});
@@ -17,10 +21,13 @@ class _ForumFormState extends State<ForumForm> {
   String topic = "";
   DateTime? date = DateTime.now();
   String description = "";
+  String title = "Harry Potter and the Half-Blood Prince (Harry Potter  #6)";
+  List<String> listBookTitle = [];
   void _initSubmitForum(request) async {
-    final response = await request.post("http:/localhost:8000/forum/flutter/addForum/", {
+    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutter/addForum/", {
       'topic': topic,
       'description': description,
+      'title':title,
     }).then((value) {
       final newValue = new Map<String, dynamic>.from(value);
       setState(() {
@@ -42,13 +49,36 @@ class _ForumFormState extends State<ForumForm> {
       });
     });
   }
+  Future<List<String>>  fetchBook()  async {
+  var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/json/');
+  var response = await http.get(
+    url,
+    headers: {
+      "Access-Control-Allow-Origin":"*",
+      "Content-Type": "application/json",
+    },
+  );
+  var data = jsonDecode(utf8.decode(response.bodyBytes));
+  List<String> listBook = [];
+  for (var book in data) {
+    if (book != null) {
+      listBook.add(Book.fromJson(book).fields.title);
+    }
+  }
+  return listBook;
+}
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Forum'),
-      ),
+          title: const Text('Add Forum', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,     
+          ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -128,6 +158,60 @@ class _ForumFormState extends State<ForumForm> {
                     },
                   ),
                 ),
+                FutureBuilder(
+                  future: fetchBook(),
+                  builder: (context, AsyncSnapshot snapshot) {
+                    if (snapshot.data == null) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      if (!snapshot.hasData) {
+                        return Column(
+                          children: [
+                            Text(
+                              " :(",
+                            ),
+                            const SizedBox(height: 8),
+                          ],
+                        );
+                      } else {
+                        return  InkWell(
+                              child: Padding(
+                                  padding:const EdgeInsets.all(8.0),
+                                  child: Container(
+                                      padding: const EdgeInsets.all(20),
+                                      height: 150,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(18.0),
+                                      ),
+                                      child: ListTile(
+                                          leading: const Icon(Icons.class_),
+                                          title: const Text(
+                                            'Book Title',
+                                          ),
+                                          trailing:DropdownButton(
+                                                value: title,
+                                                items: snapshot.data!.map<DropdownMenuItem<String>>((String item) {
+                                                  return DropdownMenuItem<String>(
+                                                    value: item,
+                                                    child: Text(item),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (String? newValue) {
+                                                  setState(() {
+                                                    title = newValue!;
+                                                  });
+                                                },
+                                              ),
+                                        ),)
+                              )
+                              ,
+                            );
+                      }
+                    }
+                  },
+                ),
+
                 TextButton(
                   child: const Text(
                     "Add",
@@ -147,7 +231,7 @@ class _ForumFormState extends State<ForumForm> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomMenu(2),
+      bottomNavigationBar: BottomMenu(1),
     );
   }
 }

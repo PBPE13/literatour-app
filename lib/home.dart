@@ -15,7 +15,7 @@ class DetailBookPage extends StatefulWidget {
 class _DetailBookPageState extends State<DetailBookPage> {
   Future<List<Book>> fetchProduct() async {
       var url = Uri.parse(
-          'http://localhost:8000/json/');
+          'https://literatour-e13-tk.pbp.cs.ui.ac.id/json/');
       var response = await http.get(
           url,
           headers: {"Content-Type": "application/json"},
@@ -37,9 +37,12 @@ class _DetailBookPageState extends State<DetailBookPage> {
   Widget build(BuildContext context) {
       return Scaffold(
           appBar: AppBar(
-          title: const Text('Books'),
-          backgroundColor:  Color(0xFF333333),
-          foregroundColor: Colors.white,     
+          title: const Text('Literatour', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,     
           ),
           body: FutureBuilder(
               future: fetchProduct(),

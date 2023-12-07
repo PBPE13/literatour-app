@@ -19,13 +19,10 @@ class _CommentFormState extends State<CommentForm> {
   final _formKey = GlobalKey<FormState>();
   String description = "";
   void _initSubmitComment(request) async {
-    final response = await request
-        .post(
-        "https://localhost:8000/forum/flutter/addComment/${widget.myForum.pk}/", {
+    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutter/addComment/${widget.myForum.pk}/", {
       'description': description,
     }).then((value) {
       final newValue = new Map<String, dynamic>.from(value);
-      print(newValue['status'].toString());
       setState(() {
         if (newValue['status'].toString() == "success") {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -50,10 +47,14 @@ class _CommentFormState extends State<CommentForm> {
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
     return Scaffold(
-
-      appBar: AppBar(
-        title: Text('Add Comment'),
-      ),
+    appBar: AppBar(
+          title: const Text('Add Comment', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,     
+          ),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -116,7 +117,7 @@ class _CommentFormState extends State<CommentForm> {
             ),
           ),
         ),
-      ),bottomNavigationBar: BottomMenu(2),
+      ),bottomNavigationBar: BottomMenu(1),
     );
   }
 }
