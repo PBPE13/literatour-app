@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:literatour_app/auth/login.dart';
+import 'package:literatour_app/auth/login.dart';
 import 'package:literatour_app/forum/screens/forum.dart';
 import 'package:literatour_app/forum/screens/forum_detail.dart';
 import 'package:literatour_app/forum/screens/forum_form.dart';
@@ -61,7 +62,7 @@ class BottomMenu extends StatelessWidget {
               case 1:
                 if (!request.loggedIn){
                     Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const LoginPage()));
+                      MaterialPageRoute(builder: (context) => const LoginApp()));
                 }else {
                   Navigator.push(context,
                     MaterialPageRoute(builder: (context) => const ForumPage()));
