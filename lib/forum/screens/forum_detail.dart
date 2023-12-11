@@ -140,8 +140,7 @@ class _ForumPostDetailState extends State<ForumDetailPage> {
                                           border: Border.all(color: Colors.grey, width: 0.3),
                                           borderRadius: BorderRadius.circular(10.0),
                                           
-                                        ),
-                                        child: 
+                                        ),                       child: 
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [

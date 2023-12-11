@@ -47,118 +47,120 @@ class _ForumPageState extends State<ForumPage> {
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,     
           ),
-        body: Stack(children: [
-        SingleChildScrollView(
-          child: Column (
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FutureBuilder(
-                    future: fetchForum(),
-                    builder: (context, AsyncSnapshot snapshot) {
-                      if (snapshot.data == null) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else {
-                        if (!snapshot.hasData) {
-                          return Column(
-                            children: [
-                              Text(
-                                "Oh no! Tidak ada forum :(",
-                              ),
-                              const SizedBox(height: 8),
-                            ],
-                          );
-                      } else {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => InkWell(
-                              // make anything clickable
-                              onTap: () {
-                                Navigator.pushReplacement(context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ForumDetailPage(
-                                          myForum:snapshot.data![index])),);
-                              },
-                              child: Padding(
-                                  padding: const EdgeInsets.only(top:8.0, left: 15.0, right: 15.0, bottom: 18.0),
-                                  child: Container(
-                                      padding: const EdgeInsets.all(20),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(18.0),
-                                      ),
-                                      child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              snapshot.data![index].topic,
-                                              overflow: TextOverflow.fade,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'Mulish',
-                                              )
-                                            ),
-                                            Text(
-                                              snapshot.data![index].title,
-                                              overflow: TextOverflow.fade,
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: 'Mulish',
-                                              )
-                                            ),
-                                            Text(
-                                              snapshot.data![index].description,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  overflow: TextOverflow.visible,
-                                                  fontStyle: FontStyle.italic,
-                                                  fontFamily: 'Mulish',
-                                                )
-                                              ),
-                                           Padding(
-                                            padding: const EdgeInsets.only(top: 15.0),
-                                            child: 
-                                              Text(
-                                                    "by: " + snapshot.data![index].user,
-                                                    overflow: TextOverflow.fade,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontFamily: 'Mulish',
-                                                    )
-                                                ),
-                                              ),
-                                              Text(
-                                                  snapshot.data![index].date.toString(),
+        
+        body: Stack(
+          children: [
+          SingleChildScrollView(
+            child:
+              Column (
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FutureBuilder(
+                        future: fetchForum(),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.data == null) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else {
+                            if (!snapshot.hasData) {
+                              return Column(
+                                children: [
+                                  Text(
+                                    "Oh no! Tidak ada forum :(",
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              );
+                          } else {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (_, index) => InkWell(
+                                  // make anything clickable
+                                  onTap: () {
+                                    Navigator.pushReplacement(context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ForumDetailPage(
+                                              myForum:snapshot.data![index])),);
+                                  },
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(top:8.0, left: 15.0, right: 15.0, bottom: 18.0),
+                                      child: Container(
+                                          padding: const EdgeInsets.all(20),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(18.0),
+                                          ),
+                                          child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  snapshot.data![index].topic,
                                                   overflow: TextOverflow.fade,
                                                   style: const TextStyle(
                                                     color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
                                                     fontFamily: 'Mulish',
                                                   )
-                                              ),
-                                          ])
-                                          )
-                              ),
-                            ));}
-                    }},)]
-          ))
-        , Positioned(
-            bottom: MediaQuery.of(context).size.height / 48,
-            right: 20,
-            child: FloatingActionButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ForumForm(),
-                ));
-              },
-              child: Icon(Icons.add, color: Colors.white),
-              backgroundColor: const Color.fromARGB(255, 3, 127, 230),
-              shape: CircleBorder(),
-            ),
-          ),
-        ])
+                                                ),
+                                                Text(
+                                                  snapshot.data![index].title,
+                                                  overflow: TextOverflow.fade,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontFamily: 'Mulish',
+                                                  )
+                                                ),
+                                                Text(
+                                                  snapshot.data![index].description,
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      overflow: TextOverflow.visible,
+                                                      fontStyle: FontStyle.italic,
+                                                      fontFamily: 'Mulish',
+                                                    )
+                                                  ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(top: 15.0),
+                                                child: 
+                                                  Text(
+                                                        "by: " + snapshot.data![index].user,
+                                                        overflow: TextOverflow.fade,
+                                                        style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontFamily: 'Mulish',
+                                                        )
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      snapshot.data![index].date.toString(),
+                                                      overflow: TextOverflow.fade,
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontFamily: 'Mulish',
+                                                      )
+                                                  ),
+                                              ])
+                                              )
+                                  ),
+                                ));}
+                        }},)])), 
+              Positioned(
+                  bottom: MediaQuery.of(context).size.height / 48,
+                  right: 20,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ForumForm(),
+                      ));
+                    },
+                    child: Icon(Icons.add, color: Colors.white),
+                    backgroundColor: const Color.fromARGB(255, 3, 127, 230),
+                    shape: CircleBorder(),
+                  ),
+                ),
+              ])
         ,bottomNavigationBar: BottomMenu(1),
     );
   }

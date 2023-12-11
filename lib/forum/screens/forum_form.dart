@@ -70,6 +70,8 @@ class _ForumFormState extends State<ForumForm> {
   @override
   Widget build(BuildContext context) {
     final request = context.watch<CookieRequest>();
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
           title: const Text('Add Forum', 
@@ -158,6 +160,7 @@ class _ForumFormState extends State<ForumForm> {
                     },
                   ),
                 ),
+                const SizedBox(width: 8), 
                 FutureBuilder(
                   future: fetchBook(),
                   builder: (context, AsyncSnapshot snapshot) {
@@ -174,58 +177,49 @@ class _ForumFormState extends State<ForumForm> {
                           ],
                         );
                       } else {
-                        return  InkWell(
-                              child: Padding(
-                                  padding:const EdgeInsets.all(8.0),
-                                  child: Container(
-                                      padding: const EdgeInsets.all(20),
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(18.0),
-                                      ),
-                                      child: ListTile(
-                                          leading: const Icon(Icons.class_),
-                                          title: const Text(
-                                            'Book Title',
-                                          ),
-                                          trailing:DropdownButton(
-                                                value: title,
-                                                items: snapshot.data!.map<DropdownMenuItem<String>>((String item) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: item,
-                                                    child: Text(item),
-                                                  );
-                                                }).toList(),
-                                                onChanged: (String? newValue) {
-                                                  setState(() {
-                                                    title = newValue!;
-                                                  });
-                                                },
-                                              ),
-                                        ),)
-                              )
-                              ,
-                            );
+                        return InkWell(
+                          child: Padding(
+                            padding:const EdgeInsets.all(8.0),
+                            child:Column( 
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children : [
+                                const Text(
+                                    'Book Title',
+                                  ),
+                                const SizedBox(width: 8), 
+                              
+                                DropdownButtonFormField(
+                                  value: title,
+                                  items: snapshot.data!.map<DropdownMenuItem<String>>((String item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item.length > 70? item.substring(0, 70): item,
+                                      child: Text(item, overflow: TextOverflow.ellipsis),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      title = newValue!;
+                                    });},
+                                  isExpanded: true,
+                                  ),
+                                  const SizedBox(width: 8), 
+                                ]) 
+                        ),);
                       }
-                    }
-                  },
-                ),
-
-                TextButton(
+                    }},),
+                Padding(padding : EdgeInsets.only(top :20.0), 
+                child: TextButton(
                   child: const Text(
                     "Add",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _initSubmitForum(request);
-                    }
+                    style: TextStyle(color: Colors.white)),
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 3, 127, 230))),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        _initSubmitForum(request);
+                      }
                   },
-                ),
+                ),)
+                
               ],
             ),
           ),
@@ -235,3 +229,6 @@ class _ForumFormState extends State<ForumForm> {
     );
   }
 }
+
+
+

@@ -31,11 +31,11 @@ class _SignUpPageState extends State<SignUpPage> {
       'password':password,
       'password2':passwordConfirmation,
       'description':description,
-
+      
     }).then((value) {
       final newValue = new Map<String, dynamic>.from(value);
-      print(newValue);
       setState(() {
+        print(newValue['status'].toString() + "||||||||||||||||||||||||||||");
         if (newValue['status'].toString() == 'success') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Account has been successfully registered!"),
@@ -63,7 +63,9 @@ class _SignUpPageState extends State<SignUpPage> {
           ));
         }
       });
+      
     });
+ 
 
 
   }
@@ -332,7 +334,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all(
-                          Colors.indigo,
+                          const Color.fromARGB(255, 3, 127, 230),
                         ),
                       ),
                     onPressed: () async {
@@ -349,13 +351,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const DetailBookPage(),
+                          builder: (context) => const LoginApp(),
                         ),
                       );
                     },
                     child: const Text(
                       'Log in',
-                      style: TextStyle(color: Colors.indigo),
+                      style: TextStyle(color: const Color.fromARGB(255, 3, 127, 230)),
                     ),
                   ),
                   TextButton(
@@ -363,13 +365,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginApp(),
+                          builder: (context) => const DetailBookPage(),
                         ),
                       );
                     },
                     child: const Text(
                       'Back to Home',
-                      style: TextStyle(color: Colors.indigo),
+                      style: TextStyle(color:  const Color.fromARGB(255, 3, 127, 230)),
                     ),
                   ),
                 ],

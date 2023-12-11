@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         backgroundColor: MaterialStateProperty.all(
-                          Colors.indigo,
+                           const Color.fromARGB(255, 3, 127, 230),
                         ),
                       ),
                       onPressed: () async {
@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: const Text(
                       'Register Now',
-                      style: TextStyle(color: Colors.indigo),
+                      style: TextStyle(color: Color.fromARGB(255, 3, 127, 230)),
                     ),
                   ),
                   TextButton(
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: const Text(
                       'Back to Home',
-                      style: TextStyle(color: Colors.indigo),
+                      style: TextStyle(color:  Color.fromARGB(255, 3, 127, 230)),
                     ),
                   ),
                 ],
