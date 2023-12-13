@@ -70,7 +70,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
                               crossAxisCount: crossAxisCount,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
-                              childAspectRatio: 1 / 1.1,
+                              childAspectRatio: 1 / 1.15,
                           ),
                           itemCount: snapshot.data!.length,
                           itemBuilder: (_, index) {
