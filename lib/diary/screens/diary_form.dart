@@ -124,7 +124,6 @@ class _DiaryFormPageState extends State<DiaryFormPage> {
                       // Kirim ke Django dan tunggu respons
                       final response = await request.postJson(
                           "http://127.0.0.1:8000/diary/create-diary-flutter/",
-                          // "http://10.0.2.2/create-flutter/",
                           jsonEncode(<String, String>{
                             'title': _title,
                             'finishDate': _finishDate.toString(),

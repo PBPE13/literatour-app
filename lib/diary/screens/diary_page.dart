@@ -14,7 +14,7 @@ class DiaryPage extends StatefulWidget {
 }
 
 class _DiaryPageState extends State<DiaryPage> {
-  Future<List<Product>> fetchDiary() async {
+  Future<List<Diary>> fetchDiary() async {
     var url = Uri.parse('http://127.0.0.1:8000/diary/json/');
     var response = await http.get(
       url,
@@ -23,10 +23,10 @@ class _DiaryPageState extends State<DiaryPage> {
 
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    List<Product> list_product = [];
+    List<Diary> list_product = [];
     for (var d in data) {
       if (d != null) {
-        list_product.add(Product.fromJson(d));
+        list_product.add(Diary.fromJson(d));
       }
     }
     return list_product;
@@ -55,15 +55,31 @@ class _DiaryPageState extends State<DiaryPage> {
                   ],
                 );
               } else {
-                return const Column(
-                  children: [
-                    Text(
-                      "Ada diary.",
-                      style: TextStyle(color: Color(0xff59A5D8), fontSize: 20),
-                    ),
-                    SizedBox(height: 8),
-                  ],
-                );
+                return ListView.builder(
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (_, index) => Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${snapshot.data![index].fields.title}",
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                  "${snapshot.data![index].fields.finishDate}"),
+                              const SizedBox(height: 10),
+                              Text("${snapshot.data![index].fields.notes}")
+                            ],
+                          ),
+                        ));
               }
             }
           }),
