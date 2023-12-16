@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:literatour_app/auth/login.dart';
 import 'package:literatour_app/auth/login.dart';
+import 'package:literatour_app/diary/screens/diary_page.dart';
 import 'package:literatour_app/forum/screens/forum.dart';
 import 'package:literatour_app/forum/screens/forum_detail.dart';
 import 'package:literatour_app/forum/screens/forum_form.dart';
 import 'package:literatour_app/home.dart';
+import 'package:literatour_app/profile/screens/profile_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 
@@ -56,7 +58,7 @@ class BottomMenu extends StatelessWidget {
           onTap: (value) {
             switch (value) {
               case 0:
-                Navigator.push(context,
+                Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => const DetailBookPage()));
                 break;
               case 1:
@@ -72,9 +74,15 @@ class BottomMenu extends StatelessWidget {
                 
                 break;
               case 3:
-              
                 break;
               case 4:
+                if (!request.loggedIn){
+                      Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => const LoginApp()));
+                  }else {
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const ProfilePage()));
+                  }
                
                 break;
             }
