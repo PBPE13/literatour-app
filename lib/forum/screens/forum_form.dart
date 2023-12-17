@@ -24,7 +24,7 @@ class _ForumFormState extends State<ForumForm> {
   String title = "Harry Potter and the Half-Blood Prince (Harry Potter  #6)";
   List<String> listBookTitle = [];
   void _initSubmitForum(request) async {
-    final response = await request.post("http://localhost:8000/forum/flutter/addForum/", {
+    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutter/addForum/", {
       'topic': topic,
       'description': description,
       'title':title,
@@ -50,7 +50,7 @@ class _ForumFormState extends State<ForumForm> {
     });
   }
   Future<List<String>>  fetchBook()  async {
-  var url = Uri.parse('http://localhost:8000/json/');
+  var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/json/');
   var response = await http.get(
     url,
     headers: {
