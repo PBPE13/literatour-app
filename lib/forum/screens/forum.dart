@@ -17,7 +17,7 @@ class ForumPage extends StatefulWidget {
 
 class _ForumPageState extends State<ForumPage> {
   Future<List<ForumPost>>  fetchForum()  async {
-  var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutterForum/');
+  var url = Uri.parse('http://localhost:8000/forum/flutterForum/');
   var response = await http.get(
     url,
     headers: {
