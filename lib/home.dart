@@ -14,7 +14,7 @@ class DetailBookPage extends StatefulWidget {
 
 class _DetailBookPageState extends State<DetailBookPage> {
   Future<List<Book>> fetchProduct() async {
-      var url = Uri.parse('http://localhost:8000/api/books/api/book/');
+      var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/api/books/api/book/');
       var response = await http.get(
           url,
           headers: {"Access-Control-Allow-Origin": "*",

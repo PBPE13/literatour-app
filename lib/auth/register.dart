@@ -23,7 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String description = "";
 
   void _initRegister(request) async {
-    final response = await request.post("http://localhost:8000/auth/registerFlutter/", {
+    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/registerFlutter/", {
       'role':role,
       'fullname':fullname,
       'genre':genre,
