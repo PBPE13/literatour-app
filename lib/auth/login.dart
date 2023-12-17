@@ -3,6 +3,7 @@ import 'package:literatour_app/auth/register.dart';
 import 'package:literatour_app/home.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:literatour_app/user/user_provider.dart';
 
 void main() {
   runApp(const LoginApp());
@@ -126,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                         String password = _passwordController.text;
 
                         final response = await request.login(
-                          "https://literatour-e13-tk.pbp.cs.ui.ac.id/auth/login/",
+                          "http://localhost:8000/auth/login/",
                           {
                             'username': username,
                             'password': password,
@@ -136,6 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                         if (request.loggedIn) {
                           String message = response['message'];
                           String uname = response['username'];
+                          int id = response['id'];
+                          Provider.of<UserProvider>(context, listen: false).setUser(id, uname);
                           if (context.mounted) {
                             Navigator.pushReplacement(
                               context,

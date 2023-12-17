@@ -19,7 +19,7 @@ class _ForumPostDetailState extends State<ForumDetailPage> {
   @override
   Widget build(BuildContext context) {
     Future<List<Comment>> fetchComment(id) async {
-        var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutterComment/${widget.myForum.pk}/');
+        var url = Uri.parse('http://localhost:8000/forum/flutterComment/${widget.myForum.pk}/');
         var response = await http.get(
           url,
           headers: {
