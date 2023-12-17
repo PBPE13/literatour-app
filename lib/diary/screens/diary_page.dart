@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:literatour_app/diary/models/diary.dart';
+import 'package:literatour_app/diary/widgets/left_drawer.dart';
 import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
@@ -15,16 +14,12 @@ class DiaryPage extends StatefulWidget {
 
 class _DiaryPageState extends State<DiaryPage> {
   Future<List<Diary>> fetchDiary() async {
-    var url = Uri.parse('http://127.0.0.1:8000/diary/json/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
-
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    final request = context.watch<CookieRequest>();
+    final response = await request
+        .get('https://literatour-e13-tk.pbp.cs.ui.ac.id/diary/get-diary/');
 
     List<Diary> list_product = [];
-    for (var d in data) {
+    for (var d in response) {
       if (d != null) {
         list_product.add(Diary.fromJson(d));
       }
@@ -35,9 +30,8 @@ class _DiaryPageState extends State<DiaryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Diary'),
-      ),
+      appBar: AppBar(title: const Text('Diary')),
+      drawer: const LeftDrawer(),
       body: FutureBuilder(
           future: fetchDiary(),
           builder: (context, AsyncSnapshot snapshot) {
@@ -56,30 +50,32 @@ class _DiaryPageState extends State<DiaryPage> {
                 );
               } else {
                 return ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (_, index) => Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${snapshot.data![index].fields.title}",
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                  "${snapshot.data![index].fields.finishDate}"),
-                              const SizedBox(height: 10),
-                              Text("${snapshot.data![index].fields.notes}")
-                            ],
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (_, index) => Card(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${snapshot.data![index].fields.title}",
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ));
+                          const SizedBox(height: 10),
+                          Text("${snapshot.data![index].fields.finishDate}"),
+                          const SizedBox(height: 10),
+                          Text("${snapshot.data![index].fields.notes}")
+                        ],
+                      ),
+                    ),
+                  ),
+                );
               }
             }
           }),

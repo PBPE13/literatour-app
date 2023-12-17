@@ -1,7 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:literatour_app/main.dart';
+import 'package:literatour_app/diary/widgets/left_drawer.dart';
 import 'package:literatour_app/diary/screens/diary_page.dart';
 import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -34,6 +33,7 @@ class _DiaryFormPageState extends State<DiaryFormPage> {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
+      drawer: const LeftDrawer(),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
