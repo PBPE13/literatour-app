@@ -1,27 +1,27 @@
 // To parse this JSON data, do
 //
-//     final diary = productFromJson(jsonString);
+//     final diary = diaryFromJson(jsonString);
 
 import 'dart:convert';
 
-List<Product> productFromJson(String str) =>
-    List<Product>.from(json.decode(str).map((x) => Product.fromJson(x)));
+List<Diary> diaryFromJson(String str) =>
+    List<Diary>.from(json.decode(str).map((x) => Diary.fromJson(x)));
 
-String productToJson(List<Product> data) =>
+String diaryToJson(List<Diary> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Product {
+class Diary {
   String model;
   int pk;
   Fields fields;
 
-  Product({
+  Diary({
     required this.model,
     required this.pk,
     required this.fields,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory Diary.fromJson(Map<String, dynamic> json) => Diary(
         model: json["model"],
         pk: json["pk"],
         fields: Fields.fromJson(json["fields"]),
@@ -50,7 +50,7 @@ class Fields {
   factory Fields.fromJson(Map<String, dynamic> json) => Fields(
         user: json["user"],
         title: json["title"],
-        finishDate: DateTime.parse(json["date"]),
+        finishDate: DateTime.parse(json["finishDate"]),
         notes: json["notes"],
       );
 

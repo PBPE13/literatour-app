@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:literatour_app/diary/models/diary.dart';
 import 'package:literatour_app/widgets/bottom_menu.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class DiaryPage extends StatefulWidget {
   const DiaryPage({Key? key}) : super(key: key);
@@ -12,22 +14,19 @@ class DiaryPage extends StatefulWidget {
 }
 
 class _DiaryPageState extends State<DiaryPage> {
-  Future<List<Product>> fetchProduct() async {
-    var url = Uri.parse('https://raisa-diandra-tugas.pbp.cs.ui.ac.id/json/');
-    // var url = Uri.parse('http://10.0.2.2/json/');
+  Future<List<Diary>> fetchDiary() async {
+    var url = Uri.parse('http://127.0.0.1:8000/diary/json/');
     var response = await http.get(
       url,
       headers: {"Content-Type": "application/json"},
     );
 
-    // melakukan decode response menjadi bentuk json
     var data = jsonDecode(utf8.decode(response.bodyBytes));
 
-    // melakukan konversi data json menjadi object Product
-    List<Product> list_product = [];
+    List<Diary> list_product = [];
     for (var d in data) {
       if (d != null) {
-        list_product.add(Product.fromJson(d));
+        list_product.add(Diary.fromJson(d));
       }
     }
     return list_product;
@@ -40,7 +39,7 @@ class _DiaryPageState extends State<DiaryPage> {
         title: const Text('Diary'),
       ),
       body: FutureBuilder(
-          future: fetchProduct(),
+          future: fetchDiary(),
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.data == null) {
               return const Center(child: CircularProgressIndicator());
