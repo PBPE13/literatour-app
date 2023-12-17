@@ -90,6 +90,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                 },
                 decoration: InputDecoration(labelText: 'Rating'),
               ),
+              SizedBox(height: 20,),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {

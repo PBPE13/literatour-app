@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:literatour_app/review/models/review.dart';
 import 'package:literatour_app/review/screens/review_form.dart';
 import 'package:http/http.dart' as http;
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import "package:literatour_app/user/user_provider.dart";
 
 class ReviewPage extends StatefulWidget {
   const ReviewPage({Key? key}) : super(key: key);
@@ -12,6 +15,20 @@ class ReviewPage extends StatefulWidget {
 }
 
 class _ReviewPageState extends State<ReviewPage> {
+  List<Review>? reviews;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReviews();
+  }
+
+  Future<void> _loadReviews() async {
+    var fetchedReviews = await fetchReviews();
+    setState(() {
+      reviews = fetchedReviews;
+    });
+  }
 
   Future<List<Review>> fetchReviews() async {
     var url = Uri.parse('http://localhost:8000/review/get-review-json/');
@@ -28,9 +45,45 @@ class _ReviewPageState extends State<ReviewPage> {
       throw Exception('Failed to load reviews');
     }
   }
+  Future<void> _deleteReview(CookieRequest request, Review review) async {
+    final response = await request.postJson(
+      "http://localhost:8000/review/delete-review-flutter/${review.pk}/",
+      jsonEncode({}),
+    );
+
+    if (response['status'] == 'success') {
+      await _loadReviews();
+      if(!context.mounted) return;
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Delete Successful"),
+            content: const Text("Your review has been deleted successfully!"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Delete failed. Please try again."),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
+     final userID = Provider.of<UserProvider>(context).user?.id;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reviews', 
@@ -41,7 +94,7 @@ class _ReviewPageState extends State<ReviewPage> {
           foregroundColor: Colors.black,     
       ),
       body: FutureBuilder<List<Review>>(
-        future: fetchReviews(),
+        future: reviews != null ? Future.value(reviews) : fetchReviews(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -52,14 +105,23 @@ class _ReviewPageState extends State<ReviewPage> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 Review review = snapshot.data![index];
-                return ListTile(
-                  title: Text(review.fields.book),
-                  subtitle: Text("Rated: ${review.fields.rating}/5"),
-                  trailing: Text(review.fields.reviewDate.toLocal().toString()),
-                  isThreeLine: true,
-                  contentPadding: EdgeInsets.all(8.0),
-                  leading: CircleAvatar(child: Text(review.fields.user.toString())),
-                  onTap: () {},
+                bool isCurrentUser = (userID == review.fields.user);
+                return Card(
+                  margin: EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Text(review.fields.book),
+                    subtitle: Text("Rated: ${review.fields.rating}/5"),
+                    trailing: isCurrentUser ? IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () async {
+                        await _deleteReview(request, review);
+                      },
+                    ) : Text(review.fields.reviewDate.toLocal().toString()),
+                    isThreeLine: true,
+                    contentPadding: EdgeInsets.all(8.0),
+                    leading: CircleAvatar(child: Text(review.fields.user.toString())),
+                    onTap: () {},
+                  ),
                 );
               },
             );
