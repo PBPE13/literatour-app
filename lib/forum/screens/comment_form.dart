@@ -19,7 +19,7 @@ class _CommentFormState extends State<CommentForm> {
   final _formKey = GlobalKey<FormState>();
   String description = "";
   void _initSubmitComment(request) async {
-    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/forum/flutter/addComment/${widget.myForum.pk}/", {
+    final response = await request.post("http://localhost:8000/forum/flutter/addComment/${widget.myForum.pk}/", {
       'description': description,
     }).then((value) {
       final newValue = new Map<String, dynamic>.from(value);

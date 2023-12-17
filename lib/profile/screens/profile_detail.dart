@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:literatour_app/profile/models/profile.dart';
+import 'package:literatour_app/home.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:literatour_app/user/user_provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -13,7 +17,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
 
   Future<List<Profile>> fetchProfile() async {
-    var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/profile-json/');
+    final userID = Provider.of<UserProvider>(context).user?.id;
+    var url = Uri.parse('http://localhost:8000/profile-json/');
     var response = await http.get(
       url,
       headers: {"Access-Control-Allow-Origin": "*",
@@ -23,7 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var data = jsonDecode(utf8.decode(response.bodyBytes));
     List<Profile> listProfile = [];
     for (var d in data) {
-      if (d != null) {
+      if (d != null && d['fields']['user'] == userID) {
         listProfile.add(Profile.fromJson(d));
       }
     }
@@ -32,9 +37,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,   
       ),
       body: FutureBuilder<List<Profile>>(
         future: fetchProfile(),
@@ -60,6 +71,34 @@ class _ProfilePageState extends State<ProfilePage> {
                     Text('Bio: ${profile.fields.bioData}', style: TextStyle(fontSize: 16)),
                     SizedBox(height: 8),
                     Text('Preferred Genre: ${profile.fields.preferredGenre}', style: TextStyle(fontSize: 16)),
+                    SizedBox(height: 20),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final response = await request.logout("http://localhost:8000/auth/logout/");
+                          String message = response["message"];
+                          if (response['status']) {
+                            String uname = response["username"];
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("$message Sampai jumpa, $uname."),
+                            ));
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => const DetailBookPage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text(message),
+                            ));
+                          }
+                        },
+                        child: const Text("Logout"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
