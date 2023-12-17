@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:literatour_app/auth/login.dart';
 import 'package:literatour_app/auth/login.dart';
+import 'package:literatour_app/borrow/screens/book_list.dart';
+import 'package:literatour_app/borrow/screens/borrow_page.dart';
 import 'package:literatour_app/forum/screens/forum.dart';
 import 'package:literatour_app/forum/screens/forum_detail.dart';
 import 'package:literatour_app/forum/screens/forum_form.dart';
@@ -70,7 +72,13 @@ class BottomMenu extends StatelessWidget {
                 }
                 break;
               case 2:
-                
+                if (!request.loggedIn){
+                  Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const LoginApp()));
+                }else {
+                  Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const BookListPage()));
+                }
                 break;
               case 3:
               
