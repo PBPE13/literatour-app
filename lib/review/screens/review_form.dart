@@ -24,7 +24,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
       fetchBooks();
     }
   Future<void> fetchBooks() async {
-    var url = Uri.parse('http://localhost:8000/api/books/api/book/');
+    var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/api/books/api/book/');
     var response = await http.get(url, headers: {"Content-Type": "application/json"});
     if (response.statusCode == 200) {
       setState(() {

@@ -18,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<List<Profile>> fetchProfile() async {
     final userID = Provider.of<UserProvider>(context).user?.id;
-    var url = Uri.parse('http://localhost:8000/profile-json/');
+    var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/profile-json/');
     var response = await http.get(
       url,
       headers: {"Access-Control-Allow-Origin": "*",

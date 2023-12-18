@@ -31,7 +31,7 @@ class _ReviewPageState extends State<ReviewPage> {
   }
 
   Future<List<Review>> fetchReviews() async {
-    var url = Uri.parse('http://localhost:8000/review/get-review-json/');
+    var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/review/get-review-json/');
     var response = await http.get(
       url, 
       headers: {"Access-Control-Allow-Origin": "*",
