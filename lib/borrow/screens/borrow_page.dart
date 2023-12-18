@@ -113,13 +113,13 @@ class _BorrowPageState extends State<BorrowPage>{
                 itemBuilder: (_, index) {
                   return InkWell(
                     onTap: () async {
-                      final response = await request.postJson('https://literatour-e13-tk.pbp.cs.ui.ac.id/return-book-flutter/${borrowedBooks.values.elementAt(index).pk}/',
+                      final response = await request.postJson('https://literatour-e13-tk.pbp.cs.ui.ac.id/borrow/return-book-flutter/${borrowedBooks.values.elementAt(index).pk}/',
                         jsonEncode(<String, String>{
                           'bookId': borrowedBooks.keys.elementAt(index).pk.toString(),
                         }),
                       );
 
-                      if(response['status'] == 'succes'){
+                      if(response['status'] == 'success'){
                         // ignore: use_build_context_synchronously
                         ScaffoldMessenger.of(context)
                           ..hideCurrentSnackBar()

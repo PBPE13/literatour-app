@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:literatour_app/borrow/screens/borrow_page.dart';
+import 'package:literatour_app/borrow/screens/detail_book.dart';
 import 'package:literatour_app/models/book.dart';
 import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
@@ -48,12 +49,12 @@ class _BookListPageState extends State<BookListPage>{
         }
       return Scaffold(
           appBar: AppBar(
-          title: const Text('List Book', 
-            style: const TextStyle(
-              fontFamily: "OpenSans",
-              fontWeight: FontWeight.w800)),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,     
+            title: const Text('List Book', 
+              style: TextStyle(
+                fontFamily: "OpenSans",
+                fontWeight: FontWeight.w800)),
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,     
           ),
           body: Column(
           children: [
@@ -116,6 +117,12 @@ class _BookListPageState extends State<BookListPage>{
                               itemBuilder: (_, index) {
                                   Book book = snapshot.data!.where((book) => book.fields.status == true).toList()[index];
                                   return InkWell(
+                                    onTap: () async {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute( builder: (context) => DetailItemPage(book: snapshot.data![index]),),
+                                      );
+                                    },
                                       child: Card(
                                         shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10.0),
