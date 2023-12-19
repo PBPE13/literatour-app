@@ -5,7 +5,10 @@
 3. Raisa Diandra Survijanto - 2206814545
 4. Rafi Ghani Harditama - 2206081364
 
+## Link Apk
+https://install.appcenter.ms/orgs/Literatour/apps/Literatour/distribution_groups/public
 [![Build status](https://build.appcenter.ms/v0.1/apps/c35eb855-b523-4a09-a20e-eb520bf79023/branches/main/badge)](https://appcenter.ms)
+
 ## Deskripsi Aplikasi
 
 LITERATOUR adalah suatu aplikasi yang digunakan sebagai perpustakaan daring. Dengan melakukan pendaftaran, pengguna dapat menggunakan berbagai fitur yang ditawarkan oleh LITERATOUR.
