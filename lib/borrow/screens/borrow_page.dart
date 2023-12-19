@@ -74,12 +74,13 @@ class _BorrowPageState extends State<BorrowPage>{
     } else {
         crossAxisCount = 1;
     }
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Borrowed Book',
           style: TextStyle(
-              fontFamily: "OpenSans",
-              fontWeight: FontWeight.w800)),
+            fontFamily: "OpenSans",
+            fontWeight: FontWeight.w800)),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black, 
         ),
@@ -149,35 +150,35 @@ class _BorrowPageState extends State<BorrowPage>{
                             child: AspectRatio(
                               aspectRatio: 1.5,
                               child: Image.network(
-                                  'https://images.saymedia-content.com/.image/t_share/MTc0MjYyNTc5Mjg2MjU1MTAw/10-books-over-1000-pages-to-read.jpg',
-                                  fit: BoxFit.cover,
+                                'https://images.saymedia-content.com/.image/t_share/MTc0MjYyNTc5Mjg2MjU1MTAw/10-books-over-1000-pages-to-read.jpg',
+                                fit: BoxFit.cover,
                               ),
                             ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(10.0),
                             child: SingleChildScrollView(
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                        Text(
-                                            borrowedBooks.keys.elementAt(index).fields.title,
-                                            style: const TextStyle(
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                            ),
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(borrowedBooks.keys.elementAt(index).fields.authors),
-                                        const SizedBox(height: 5),
-                                        Text("Borrow Date: ${borrowedBooks.values.elementAt(index).fields.borrowDate}"),
-                                        const SizedBox(height: 5),
-                                        Text("Return Date: ${borrowedBooks.values.elementAt(index).fields.returnDate}")
-                                    ],
-                                ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      borrowedBooks.keys.elementAt(index).fields.title,
+                                      style: const TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(borrowedBooks.keys.elementAt(index).fields.authors),
+                                  const SizedBox(height: 5),
+                                  Text("Borrow Date: ${borrowedBooks.values.elementAt(index).fields.borrowDate}"),
+                                  const SizedBox(height: 5),
+                                  Text("Return Date: ${borrowedBooks.values.elementAt(index).fields.returnDate}")
+                                ],
+                              ),
                             ),
-                        ),
+                          ),
                         ]
                       )
                     )
