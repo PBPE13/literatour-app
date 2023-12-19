@@ -23,7 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   String description = "";
 
   void _initRegister(request) async {
-    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/registerFlutter/", {
+    final response = await request.post("https://literatour-e13-tk.pbp.cs.ui.ac.id/auth/registerFlutter/", {
       'role':role,
       'fullname':fullname,
       'genre':genre,
@@ -36,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
       final newValue = new Map<String, dynamic>.from(value);
       setState(() {
         print(newValue['status'].toString() + "||||||||||||||||||||||||||||");
-        if (newValue['status'].toString() == 'success') {
+        if (newValue['status'].toString() == 'true') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Account has been successfully registered!"),
             backgroundColor: Colors.indigo,
