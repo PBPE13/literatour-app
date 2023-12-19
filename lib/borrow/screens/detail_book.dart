@@ -36,10 +36,6 @@ class _DetailItemPageState extends State<DetailItemPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Title: ',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
             Text(
               widget.book.fields.title,
               style: const TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
@@ -94,66 +90,84 @@ class _DetailItemPageState extends State<DetailItemPage> {
                           context:context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text("Tanggal Pengembalian Buku"),
-                              content: Form(
-                                key: _formKey,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:CrossAxisAlignment.start,
-                                    children: [
-                                      TextFormField(
-                                        controller: _date,
-                                        decoration: InputDecoration(
-                                          hintText: "year-month-day",
-                                          labelText: "Return Date", 
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        validator: (String? value) {
-                                          if (value == null || value.isEmpty) {
-                                            return "Tanggal pengembalian tidak boleh kosong!";
-                                          }
-                                          return null;
-                                        },
-                                      ),
-                                      Row(
+                              title: const Text("Tanggal Pengembalian Buku"),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Form(
+                                    key: _formKey,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        crossAxisAlignment:CrossAxisAlignment.start,
                                         children: [
-                                          TextButton(
-                                            child: const Text("Pinjam Buku"),
-                                            onPressed: () async {
-                                              if (_formKey.currentState!.validate()){
-                                                final response = await request.postJson("https://literatour-e13-tk.pbp.cs.ui.ac.id/borrow/borrow-flutter/${widget.book.pk}/",
-                                                jsonEncode(<String, String>{
-                                                  'return_date' : _date.text,
-                                                }));
-                                                if(response['status'] == 'success'){
-                                                  // ignore: use_build_context_synchronously
-                                                  ScaffoldMessenger.of(context)
-                                                    ..hideCurrentSnackBar()
-                                                    ..showSnackBar(const SnackBar(
-                                                      content: Text("Berhasil Meminjam buku")));
-                                                  
-                                                  // ignore: use_build_context_synchronously
-                                                  Navigator.pop(
-                                                    context,
-                                                    MaterialPageRoute(builder: (context) => const BookListPage()),
-                                                  );
-                                                } else{
-                                                  ScaffoldMessenger.of(context)
-                                                    ..hideCurrentSnackBar()
-                                                    ..showSnackBar(const SnackBar(
-                                                      content: Text("Tidak dapat Meminjam buku. Silahkan coba lagi")));
-                                                }
+                                          TextFormField(
+                                            controller: _date,
+                                            decoration: InputDecoration(
+                                              hintText: "year-month-day",
+                                              labelText: "Return Date", 
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(5.0),
+                                              ),
+                                            ),
+                                            validator: (String? value) {
+                                              if (value == null || value.isEmpty) {
+                                                return "Tanggal pengembalian tidak boleh kosong!";
                                               }
+                                              if(DateTime.tryParse(value) == null){
+                                                return "Input harus sesuai format";
+                                              }
+                                              if(DateTime.tryParse(value)!.isBefore(DateTime.now())){
+                                                return "Tanggal Pengembalian tidak sesuai";
+                                              }
+                                              return null;
                                             },
-                                          )
+                                          ),
                                         ]
                                       )
-                                    ]
-                                  )
-                                )
-                              ),
+                                    )
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                                    child: Center(
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.blue,
+                                          padding: const EdgeInsets.all(16.0),
+                                        ),
+                                        onPressed: () async {
+                                          if (_formKey.currentState!.validate()){
+                                            final response = await request.postJson("https://literatour-e13-tk.pbp.cs.ui.ac.id/borrow/borrow-flutter/${widget.book.pk}/",
+                                            jsonEncode(<String, String>{
+                                              'return_date' : _date.text,
+                                            }));
+                                            if(response['status'] == 'success'){
+                                              // ignore: use_build_context_synchronously
+                                              ScaffoldMessenger.of(context)
+                                                ..hideCurrentSnackBar()
+                                                ..showSnackBar(const SnackBar(
+                                                  content: Text("Berhasil Meminjam buku")));
+                                              
+                                              // ignore: use_build_context_synchronously
+                                              Navigator.pop(
+                                                context,
+                                                MaterialPageRoute(builder: (context) => const BookListPage()),
+                                              );
+                                            } else{
+                                              // ignore: use_build_context_synchronously
+                                              ScaffoldMessenger.of(context)
+                                                ..hideCurrentSnackBar()
+                                                ..showSnackBar(const SnackBar(
+                                                  content: Text("Tidak dapat Meminjam buku. Silahkan coba lagi")));
+                                            }
+                                          }
+                                        },
+                                        child: const Text("Borrow", style: TextStyle(color: Colors.white)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )    
                             );
                           }
                         ); 
