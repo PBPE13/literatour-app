@@ -75,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Center(
                       child: ElevatedButton(
                         onPressed: () async {
-                          final response = await request.logout("http://localhost:8000/auth/logout/");
+                          final response = await request.logout("https://literatour-e13-tk.pbp.cs.ui.ac.id/auth/logout/");
                           String message = response["message"];
                           if (response['status']) {
                             String uname = response["username"];
