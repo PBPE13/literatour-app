@@ -47,7 +47,7 @@ class _ReviewPageState extends State<ReviewPage> {
   }
   Future<void> _deleteReview(CookieRequest request, Review review) async {
     final response = await request.postJson(
-      "http://localhost:8000/review/delete-review-flutter/${review.pk}/",
+      "https://literatour-e13-tk.pbp.cs.ui.ac.id/review/delete-review-flutter/${review.pk}/",
       jsonEncode({}),
     );
 

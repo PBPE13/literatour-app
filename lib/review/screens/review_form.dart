@@ -102,7 +102,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                         return;
                       }
                     final response = await request.postJson(
-                      "http://localhost:8000/review/add-review-flutter/",
+                      "https://literatour-e13-tk.pbp.cs.ui.ac.id/review/add-review-flutter/",
                       jsonEncode(<String, String>{
                         'book': selectedBook!,
                         'rating': rating.toString(),
