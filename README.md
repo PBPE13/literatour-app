@@ -7,6 +7,7 @@
 
 ## Link Apk
 https://install.appcenter.ms/orgs/Literatour/apps/Literatour/distribution_groups/public
+
 [![Build status](https://build.appcenter.ms/v0.1/apps/c35eb855-b523-4a09-a20e-eb520bf79023/branches/main/badge)](https://appcenter.ms)
 
 ## Deskripsi Aplikasi
