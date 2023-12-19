@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:literatour_app/models/book.dart';
+import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:literatour_app/review/screens/review_page.dart';
@@ -142,6 +143,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
         ),
       ),
       ),
+      bottomNavigationBar: BottomMenu(4),
     );
   }
 }

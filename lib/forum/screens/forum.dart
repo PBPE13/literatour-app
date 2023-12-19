@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:literatour_app/auth/login.dart';
 import 'package:literatour_app/forum/models/forum.dart';
 import 'package:literatour_app/forum/screens/forum_detail.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';

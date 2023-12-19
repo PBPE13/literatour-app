@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:literatour_app/review/models/review.dart';
 import 'package:literatour_app/review/screens/review_form.dart';
 import 'package:http/http.dart' as http;
+import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import "package:literatour_app/user/user_provider.dart";
@@ -141,6 +142,9 @@ class _ReviewPageState extends State<ReviewPage> {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
+      bottomNavigationBar: BottomMenu(4),
     );
+    
   }
+  
 }

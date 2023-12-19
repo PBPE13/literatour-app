@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:literatour_app/profile/models/profile.dart';
 import 'package:literatour_app/home.dart';
+import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:literatour_app/user/user_provider.dart';
@@ -105,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
             );
           }
         },
-      ),
+      ), bottomNavigationBar: BottomMenu(5),
     );
   }
 }

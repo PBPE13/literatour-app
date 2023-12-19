@@ -1,13 +1,10 @@
 import 'dart:convert';
 
 import 'package:literatour_app/forum/screens/forum.dart';
-import 'package:literatour_app/main.dart';
 import 'package:flutter/material.dart';
-import 'package:literatour_app/forum/models/forum.dart';
 import 'package:literatour_app/models/book.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
-import 'package:literatour_app/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:literatour_app/widgets/bottom_menu.dart';
 class ForumForm extends StatefulWidget {

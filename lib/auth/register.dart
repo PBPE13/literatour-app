@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }).then((value) {
       final newValue = new Map<String, dynamic>.from(value);
       setState(() {
-        print(newValue['status'].toString() + "||||||||||||||||||||||||||||");
+        print(newValue['status'].toString());
         if (newValue['status'].toString() == 'true') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             content: Text("Account has been successfully registered!"),
