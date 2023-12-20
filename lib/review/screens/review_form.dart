@@ -14,24 +14,28 @@ class ReviewFormPage extends StatefulWidget {
 
 class _ReviewFormPageState extends State<ReviewFormPage> {
   final _formKey = GlobalKey<FormState>();
-  String? selectedBook;
+  String selectedBook = 'Harry Potter and the Half-Blood Prince (Harry Potter  #6)';
   String content = '';
   int rating = 1;
-  List<Book> books = [];
+  List<String> books = [];
 
-  @override
-    void initState() {
-      super.initState();
-      fetchBooks();
+  Future<List<String>>  fetchBook()  async {
+    var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/json/');
+    var response = await http.get(
+      url,
+      headers: {
+        "Access-Control-Allow-Origin":"*",
+        "Content-Type": "application/json",
+      },
+    );
+    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    List<String> listBook = [];
+    for (var book in data) {
+      if (book != null) {
+        listBook.add(Book.fromJson(book).fields.title);
+      }
     }
-  Future<void> fetchBooks() async {
-    var url = Uri.parse('https://literatour-e13-tk.pbp.cs.ui.ac.id/api/books/api/book/');
-    var response = await http.get(url, headers: {"Content-Type": "application/json"});
-    if (response.statusCode == 200) {
-      setState(() {
-        books = bookFromJson(response.body);
-      });
-    }
+    return listBook;
   }
 
   @override
@@ -39,7 +43,12 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a Review'),
+        title: const Text('Add a Review', 
+            style: const TextStyle(
+              fontFamily: "OpenSans",
+              fontWeight: FontWeight.w800)),
+          backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,   
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -50,58 +59,88 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-                DropdownButtonFormField<String>(
-                  value: selectedBook,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedBook = value;
-                    });
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: FutureBuilder(
+                    future: fetchBook(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (snapshot.data == null) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        if (!snapshot.hasData) {
+                          return Column(
+                            children: [
+                              Text(
+                                "Book list is empty !",
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                          );
+                        } else {
+                          return InkWell(
+                            child: Column( 
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children : [
+                                const Text(
+                                    'Book Title',
+                                  ),
+                                const SizedBox(width: 8), 
+                              
+                                DropdownButtonFormField(
+                                  value: selectedBook,
+                                  items: snapshot.data!.map<DropdownMenuItem<String>>((String item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item.length > 70? item.substring(0, 70): item,
+                                      child: Text(item, overflow: TextOverflow.ellipsis),
+                                    );
+                                  }).toList(),
+                                  onChanged: (String? newValue) {
+                                    setState(() {
+                                      selectedBook = newValue!;
+                                    });},
+                                  isExpanded: true,
+                                  ),
+                                  const SizedBox(width: 8), 
+                                ]),);
+                        }
+                      }},),
+                ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: TextFormField(
+                  decoration: InputDecoration(labelText: 'Content'),
+                  onSaved: (value) => content = value!,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your review content';
+                    }
+                    return null;
                   },
-                  items: books.map<DropdownMenuItem<String>>((Book book) {
-                    return DropdownMenuItem<String>(
-                      value: book.fields.title,
-                      child: Text(book.fields.title),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: DropdownButtonFormField(
+                  value: rating,
+                  items: [1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
+                    return DropdownMenuItem<int>(
+                      value: value,
+                      child: Text(value.toString()),
                     );
                   }).toList(),
-                  decoration: InputDecoration(labelText: 'Book Title'),
-                  validator: (value) => value == null ? 'Please select a book' : null,
+                  onChanged: (int? newValue) {
+                    setState(() {
+                      rating = newValue!;
+                    });
+                  },
+                  decoration: InputDecoration(labelText: 'Rating'),
                 ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Content'),
-                onSaved: (value) => content = value!,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your review content';
-                  }
-                  return null;
-                },
-              ),
-              DropdownButtonFormField(
-                value: rating,
-                items: [1, 2, 3, 4, 5].map<DropdownMenuItem<int>>((int value) {
-                  return DropdownMenuItem<int>(
-                    value: value,
-                    child: Text(value.toString()),
-                  );
-                }).toList(),
-                onChanged: (int? newValue) {
-                  setState(() {
-                    rating = newValue!;
-                  });
-                },
-                decoration: InputDecoration(labelText: 'Rating'),
               ),
               SizedBox(height: 20,),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    if (selectedBook == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Please select a book")),
-                        );
-                        return;
-                      }
                     final response = await request.postJson(
                       "https://literatour-e13-tk.pbp.cs.ui.ac.id/review/add-review-flutter/",
                       jsonEncode(<String, String>{

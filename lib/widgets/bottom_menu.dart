@@ -124,10 +124,11 @@ class BottomMenu extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => const LoginApp()));
                 } else {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProfilePage()));
+                  Navigator.popUntil(context, (route) => route.isFirst);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProfilePage()));
                 }
 
                 break;
