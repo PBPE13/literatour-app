@@ -6,6 +6,7 @@ import 'package:literatour_app/models/book.dart';
 import 'package:literatour_app/widgets/bottom_menu.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 class DiaryFormPage extends StatefulWidget {
   const DiaryFormPage({super.key});
@@ -43,7 +44,7 @@ class _DiaryFormPageState extends State<DiaryFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final request = context.watch<CookieRequest>();
+    // final request = context.watch<CookieRequest>();
 
     return Scaffold(
       appBar: AppBar(
@@ -86,7 +87,7 @@ class _DiaryFormPageState extends State<DiaryFormPage> {
                         ),
                       ),
                       value: _title,
-                      items: snapshot.data!.map((String book) {
+                      items: snapshot.data!.toSet().map((String book) {
                         return DropdownMenuItem<String>(
                           value: book,
                           child: Text(book),
@@ -181,24 +182,25 @@ class _DiaryFormPageState extends State<DiaryFormPage> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       try {
-                        // Kirim ke Django dan tunggu respons
-                        final response = await request.postJson(
-                            "https://literatour-e13-tk.pbp.cs.ui.ac.id/diary/create-diary-flutter/",
-                            jsonEncode(<String, String>{
+                        final response = await http.post(
+                            Uri.parse(
+                                "https://literatour-e13-tk.pbp.cs.ui.ac.id/diary/create-diary-flutter/"),
+                            headers: <String, String>{
+                              'Content-Type': 'application/json; charset=UTF-8',
+                            },
+                            body: jsonEncode(<String, String>{
                               'title': _title,
                               'finishDate': _finishDate.toString(),
                               'notes': _notes,
                             }));
 
-                        print("Raw Response from server: $response");
-
-                        if (response['status'] == 'success') {
+                        print(response.statusCode);
+                        if (response.statusCode == 200) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
                             content: Text("Succeeded on saving a new diary!"),
                           ));
 
-                          // Only navigate if the request is successful
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
