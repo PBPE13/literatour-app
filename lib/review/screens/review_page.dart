@@ -91,8 +91,8 @@ class _ReviewPageState extends State<ReviewPage> {
             style: const TextStyle(
               fontFamily: "OpenSans",
               fontWeight: FontWeight.w800)),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,     
+          backgroundColor: Colors.indigo,
+          foregroundColor: Colors.white,      
       ),
       body: FutureBuilder<List<Review>>(
         future: reviews != null ? Future.value(reviews) : fetchReviews(),
