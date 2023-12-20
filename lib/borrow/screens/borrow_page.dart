@@ -19,25 +19,19 @@ class _BorrowPageState extends State<BorrowPage>{
   Map<Book, Borrow> borrowedBooks = {};
 
   Future<Map<Book, Borrow>> fetchBorrow() async {
-    var url = Uri.parse(
-      'https://literatour-e13-tk.pbp.cs.ui.ac.id/borrow/get-borrow-flutter/');
-    var response = await http.get(
-      url,
-      headers: {"Content-Type": "application/json"},
-    );
+    final request = context.watch<CookieRequest>();
 
-    var data = jsonDecode(utf8.decode(response.bodyBytes));
+    final response = await request.get('https://literatour-e13-tk.pbp.cs.ui.ac.id/borrow/get-borrow-flutter/');
 
     Map<Book, Borrow> list_borrow = {};
-    if (data != null) {
-      for (var d in data) {
-        if (d != null) {
-          int bookId = Borrow.fromJson(d).fields.book;
-          Book book = await fetchBookById(bookId);
-          Borrow borrow = Borrow.fromJson(d);
-          list_borrow.addAll({book : borrow});
-        }
-     }
+    
+    for (var d in response) {
+      if (d != null) {
+        int bookId = Borrow.fromJson(d).fields.book;
+        Book book = await fetchBookById(bookId);
+        Borrow borrow = Borrow.fromJson(d);
+        list_borrow.addAll({book : borrow});
+      }
     }
     return list_borrow;
   }
